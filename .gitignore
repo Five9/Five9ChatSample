@@ -1,0 +1,7 @@
+# User-specific files
+.doc
+.docx
+
+# Project Files
+.idea/
+
