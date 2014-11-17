@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -113,7 +113,7 @@
 	</head>
 	
 	<body>
-		<div id="information-page" data-role="page" data-theme="<%= theme %>"  style="">
+		<div id="information-page" data-role="page" data-theme="a"  style="">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
@@ -148,7 +148,7 @@
 		</div>
 		
 		
-		<div id="connecting-page" data-role="page" data-theme="<%= theme %>">
+		<div id="connecting-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
@@ -163,7 +163,7 @@
 		</div>
 		
 		
-		<div id="error-page" data-role="page" data-theme="<%= theme %>">
+		<div id="error-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
@@ -175,7 +175,7 @@
 			</div>
 		</div>
 	
-		<div id="noService-page" data-role="page" data-theme="<%= theme %>">
+		<div id="noService-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
@@ -191,37 +191,40 @@
 			
 		</div>
 
-		<div id="conversation-page" data-role="page" data-theme="<%= theme %>" style="height: 100% !important;">
-			<div class="table">
-				<div class="row">
-					<div class="cell" style="height: 42px;">
-						<div data-role="header">
-                          				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
-							<a id="buttonTerminateChat" data-inline="true" class="ui-btn-right five9-ivr-right-btn" data-iconpos="right" data-icon="" href="#" data-role="button" role="button">Terminate</a>
-						</div>
-					</div>
-				</div>
-				
-				<div class="row">
-					<div class="cell chatContent">
-						<div class="messages" id="messages">
-						</div>
-					</div>
-				</div>
-			
-				<div class="row">
-					<div class="cell" style="height: 50px; ">
-						<div class="chatInputMessageContainer" style="">
-							<div style="height: 100%; float: right;">
-								<a id="buttonSend" data-rel="Send" data-inline="true" class="five9-ivr-send-btn" data-iconpos="" data-icon="" href="#" data-role="button" role="button">Send</a>
+		<div id="conversation-page" data-role="page" data-theme="a">
+			<table style="height: 100%; width: 100%; border: none; overflow: hidden">
+				<thead>
+					<tr>
+						<th style="width: 100%">
+							<div data-role="header">
+								<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
+								<a id="buttonTerminateChat" data-inline="true" class="ui-btn-right five9-ivr-right-btn" data-iconpos="right" data-icon="" href="#" data-role="button" role="button">Terminate</a>
 							</div>
-							
-							<div style="height: 50px; overflow: hidden; padding-right: 6px;">
-								<textarea id="inputMessage" class="chatInputMessage" maxlength="2048" wrap="hard" style="height: 112px; margin: 0px 6px 0px 0px;"></textarea>
+						</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td style="width: 100%">
+							<table style="width: 100%; border: none;">
+								<tr>
+									<td><textarea id="inputMessage" data-role="none" class="chatInputMessage" maxlength="2048" style="height: 100%; width: 100%"></textarea></td>
+									<td><a id="buttonSend" data-rel="Send" data-inline="true" class="five9-ivr-send-btn" data-iconpos="" data-icon="" href="#" data-role="button" role="button" style="height: 100%;">Send</a></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td style="width: 100%">
+							<div class="chatContent" style="height: 100%; width: 100%; overflow-y: auto">
+								<div class="messages" id="messages">
+								</div>
 							</div>
-						</div>
-					</div>
-				</div>
+						</td>
+					</tr>
+				</tbody>
 			</div>
 		</div>
 	</body>

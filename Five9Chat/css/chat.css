@@ -32,6 +32,7 @@ div.line {
 	border-radius: 0.3em !important; border-color: rgb(150, 150, 150) !important; margin-top: 0px; margin-bottom : 20px;
 }
 
+/*
 #inputContainer > label {
 	margin-bottom : 0px;
 }
@@ -39,6 +40,7 @@ div.line {
 #inputContainer > textarea {
 	margin-top : 0px;
 }
+*/
 
 /* iPhone [portrait + landscape] */
 /* @media only screen and (max-device-width: 320px) { */

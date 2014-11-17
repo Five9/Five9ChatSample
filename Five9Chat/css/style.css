@@ -71,7 +71,8 @@ div[data-role="footer"] {
 }
 
 .five9-ivr-send-btn {
-	padding: 10px 0px 0px 0px;
+    margin: 0px !important;
+	padding: 6px !important;
 }
 
 .five9-ivr-right-btn:after {
