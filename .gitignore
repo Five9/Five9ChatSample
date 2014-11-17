@@ -1,6 +1,6 @@
 # User-specific files
-.doc
-.docx
+*.doc
+*.docx
 
 # Project Files
 .idea/
