@@ -7,6 +7,7 @@ MessageTypes.RESULT_SUCCESS                     	=  1;
 MessageTypes.RESULT_ERROR                       	= -1;
 
 MessageTypes.MSG_GET_TENANT_ID   					= 97;
+MessageTypes.MSG_GET_USER_LOGGED_IN					= 98;
 
 MessageTypes.MSG_GET_PROFILE_SURVEY					= 700;
 

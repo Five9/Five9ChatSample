@@ -42,6 +42,7 @@ function MessageHandler() {
 		    case MessageTypes.MSG_GET_SESSION_INFORMATION:
 		    case MessageTypes.MSG_GET_PROFILE_SURVEY:
 		    case MessageTypes.MSG_NO_SERVICE:
+		    case MessageTypes.MSG_GET_USER_LOGGED_IN:
         		gChatMessageHandler.handleMessage(lvMsg);
         		return;
         		

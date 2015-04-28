@@ -188,6 +188,11 @@ function Session() {
 //	this.getAgentName = function() {
 //		return session.agentName;
 //	};
+	
+	
+	this.getUseVCCBridge = function() {
+		return false;
+	};
 
 	
 	function startKeepAliveSessionMessage() {

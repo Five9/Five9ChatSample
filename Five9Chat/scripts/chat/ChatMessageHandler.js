@@ -70,8 +70,21 @@ function ChatMessageHandler() {
 		    case MessageTypes.MSG_NO_SERVICE:
 		    	handleNoServiceMessage(jsonMessage);
 		    	return ;
+
+		    case MessageTypes.MSG_GET_USER_LOGGED_IN:
+		    	handleGetAgentLoggedInMessage(jsonMessage);
+		    	return ;
 		}		
 	};
+
+	function handleGetAgentLoggedInMessage(jsonMessage) {
+		if (jsonMessage.status == MessageTypes.RESULT_SUCCESS) {
+			return gChatEventHandler.handleAgentAvailableMessage();
+		} 
+
+		return gChatEventHandler.handleNoAgentAvailableMessage();
+	};
+
 	
 	function handleConfirmationMessageFromServer(jsonMessage) {
 		Console.log( "handleConfirmationMessageFromServer", jsonMessage);
@@ -86,7 +99,6 @@ function ChatMessageHandler() {
 			
 			var chatResponse = jsonMessage.body;
 			gSession.setId(chatResponse.id);
-			// gSession.setTenantId(chatResponse.tenantId);
 			
 			var waitMessage = JSON.parse(chatResponse.waitMessage);
 			
@@ -242,6 +254,8 @@ function ChatMessageHandler() {
 				question = parameters[i].value; 
 			}
 		}
+
+        gMessageSender.getAgentAvailable(tenant);
 
 		gChatEventHandler.handleSessionInformaiton(tenant, profileName, groupId, firstName + " " + lastName, email, question);
 	};

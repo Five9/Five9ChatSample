@@ -22,7 +22,7 @@ function ChatEventHandler() {
 		
 		typing = new ChatTyping(container.find("#messages"));
 		
-		container.on("keyup", "#inputMessage", function(event) { handleOnKeyUpEvent(event); } );
+		container.on("keydown", "#inputMessage", function(event) { handleOnKeyUpEvent(event); } );
 		
 		setProfiles(gSession.getProfiles());
 	};
@@ -105,7 +105,7 @@ function ChatEventHandler() {
 //
 //		var url = "?profile=" + getProfileName() + "&tenant=" + getTenantName() + "&templateId=" + survey.templateId +  "&templateThankyouMessage=" + survey.templateThankyouMessage + "&templateQuestion=" + survey.templateQuestion + "&css=" + gSession.getCSS() + "&theme=" + gSession.getTheme() + "&fromMedia=" + 2 + "&itemId=" + gSession.getId() + group;
 //		
-//		window.location.replace("../SurveyConsole/index.html" + url);
+//		window.location.replace("../SurveyConsole/index.jsp" + url);
 	};
 
 	
@@ -122,6 +122,16 @@ function ChatEventHandler() {
 	};
 	
 	
+	this.handleNoAgentAvailableMessage = function() {
+		$.mobile.changePage("#unavailable-page");
+	};
+
+	
+	this.handleAgentAvailableMessage = function() {
+		$.mobile.changePage("#information-page");
+	};
+
+
 	this.handleClientChatRequest = function(message) {
 		$.mobile.changePage("#connecting-page");
 		
@@ -154,9 +164,17 @@ function ChatEventHandler() {
 			group = "&groupId=" + survey.groupId;
 		}
 
-		var url = "?profile=" + getProfileName() + "&tenant=" + getTenantName() + "&templateId=" + survey.templateId +  "&templateThankyouMessage=" + survey.templateThankyouMessage + "&templateQuestion=" + survey.templateQuestion + "&css=" + gSession.getCSS() + "&theme=" + gSession.getTheme() + "&fromMedia=" + 2 + "&itemId=" + gSession.getId() + group;
-		
-		window.location.replace("../SurveyConsole/index.jsp" + url);
+		var url = "profile=" + encodeURIComponent(getProfileName()) + 
+					"&tenant=" + encodeURIComponent(getTenantName()) + 
+					"&templateId=" + survey.templateId +  
+					"&templateThankyouMessage=" + encodeURIComponent(survey.templateThankyouMessage) + 
+					"&templateQuestion=" + encodeURIComponent(survey.templateQuestion) + 
+					"&css=" + gSession.getCSS() + 
+					"&theme=" + gSession.getTheme() + 
+					"&fromMedia=" + 2 + 
+					"&itemId=" + gSession.getId() + group;
+
+		window.location.replace("../SurveyConsole/index.jsp?" + url);
 	};
 	
 	
@@ -222,6 +240,7 @@ function ChatEventHandler() {
 	
 	function validateForm() {
 		return (getProfileName() != null && getName() != null && getEmail() != null && getQuestion() != null);
+		// return (getProfileName() != null && getName() != null);
 	};
 	
 	
@@ -272,17 +291,21 @@ function ChatEventHandler() {
 	
 	
 	this.handleSendOnButtonClicked = function() {
-		var msg = $("#inputMessage").val().trim();
+		// var msg = $("#inputMessage").val().trim();
+		var msg = $("#inputMessage").html().trim();
 		if (msg.length == 0) {
 			return ;
 		}
+		
+		msg = msg.split(">").join("&gt;").split("<").join("&lt;");
 		
 		return send(msg);
 	};
 	
 	
 	function handleAddEmoticonToInput(emoticon) {
-		$("#inputMessage").val($("#inputMessage").val() + emoticon);
+		// $("#inputMessage").val($("#inputMessage").val() + emoticon);
+		$("#inputMessage").html($("#inputMessage").html() + emoticon);
 		
 		focusOnInput();
 	};
@@ -327,16 +350,17 @@ function ChatEventHandler() {
     	}
     	
 		var keyCode = event.keyCode;
-		Console.log("keyCode == " + keyCode);
+		
 		if (keyCode == 13) {
-    		var msg = $("#inputMessage").val();
-          	msg = msg.substring(0, (msg.length - 1)).trim();
-    		if (msg.length == 0) {
-        		$(event.srcElement).val("");
-    			return ;
-    		}
+			event.preventDefault();
 			
-			return send(msg);
+    		var msg = $("#inputMessage").html();
+    		if (msg.length > 0) {
+    			return send(msg);
+    		}
+    		
+    		$("#inputMessage").empty();
+    		return ;
 		}
 		
 		typing.setTyping( gSession.getId() , agentsInChat, 1000);
@@ -351,7 +375,8 @@ function ChatEventHandler() {
 		
 		Console.log("send message to agent, need confirmation message for messageId == " + message.getMessageId() + " ReferenceId == " + message.getReferenceId());
 		
-		$("#inputMessage").val("");
+		// $("#inputMessage").val("");
+		$("#inputMessage").empty();
 		
 		typing.stopTimerTyping();
 		
@@ -429,10 +454,14 @@ function ChatEventHandler() {
 	
 	
 	function focusOnInput() {
-		var temp = $("#inputMessage").val();
-		$("#inputMessage").val('');
+//		var temp = $("#inputMessage").val();
+//		$("#inputMessage").val('');
+//		$("#inputMessage").focus();
+//		$("#inputMessage").val(temp);
+		var temp = $("#inputMessage").html();
+		$("#inputMessage").html('');
 		$("#inputMessage").focus();
-		$("#inputMessage").val(temp);
+		$("#inputMessage").html(temp);
 	};
 	
 	
@@ -453,7 +482,7 @@ function ChatEventHandler() {
         	$("#profiles").append("<option>" + profiles[i] + "</option>");
         }
         
-        $("#profiles").selectmenu("refresh");
+        $("#profiles").selectmenu();
 	};
 	
 	function getProfileName() {

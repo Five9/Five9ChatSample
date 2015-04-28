@@ -75,7 +75,9 @@
                 (gButtonEventHandler = new ButtonEventHandler()).init();
                 (gChatEventHandler = new ChatEventHandler()).init();
                 gChatMessageHandler = new ChatMessageHandler();
-                
+
+				$.emoticons.define();
+
                	gHTTPCommunication = new HTTPCommunication();
                 
                 if (gSession.hasSessionId()) {
@@ -105,127 +107,157 @@
                 init(params);
 
             	browser = Utility.getBrowserType();
-            	
-            	$.mobile.changePage("#information-page");
+
+				$.mobile.changePage("#initializing-page");
+            	// $.mobile.changePage("#information-page");
             	// $.mobile.changePage("#conversation-page");
+
+				if (!gSession.hasSessionId()) {
+					gMessageSender.getAgentAvailable(gSession.getTenant());
+				}
 		    });
 		</script>
 	</head>
 	
 	<body>
+
+		<div id="initializing-page" data-role="page" data-theme="a">
+			<div data-role="header">
+				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
+			</div>
+
+			<div data-role="content">
+				<h2 id="informationMessage">
+					Initializing, please wait!
+				</h2>
+
+				<div class="loadingImage"></div>
+			</div>
+		</div>
+
 		<div id="information-page" data-role="page" data-theme="a"  style="">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
-			
+
 			<div id="inputContainer" data-role="content">
 				<label>
 					Subject:
 				</label>
-				<select name="profiles" id="profiles">
-    			</select>
+				<select name="profiles" id="profiles" data-role="none">
+				</select>
 
 				<label>
 					Name:
 				</label>
 				<input restrictions="{ &quot;type&quot;: &quot;digits&quot; , &quot;range&quot;:{ &quot;minlength&quot;:1, &quot;maxlength&quot;: 20} }" name="name" id="name" type="text" value="">
-				
+
 				<label>
 					Email:
 				</label>
 				<input restrictions="{ &quot;type&quot;: &quot;digits&quot; , &quot;range&quot;:{ &quot;minlength&quot;:1, &quot;maxlength&quot;: 20} }" name="email" id="email" type="text" value="">
-				
+
 				<label>
 					Question:
 				</label>
-				
+
 				<textarea style="height: 50px !important;" rows="6" cols="55" name="question" id="question"></textarea>
 			</div>
-			
+
 			<div data-position="fixed" data-theme="d" data-role="footer">
 				<a id="buttonOpenSession" data-role="button" data-wrapperels="false" data-iconshadow="false" data-shadow="false" data-corners="false" class="five9-ivr-start-btn" href="#">Start Chat</a>
 			</div>
 		</div>
-		
-		
+
+		<div id="unavailable-page" data-role="page" data-theme="a">
+			<div data-role="header">
+				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
+			</div>
+
+			<div data-role="content">
+				<h2>
+					We are currently unable to service your request. Please contact us during normal business hours.
+				</h2>
+			</div>
+		</div>
+
 		<div id="connecting-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
-			
+
 			<div data-role="content">
 				<h2 id="informationMessage">
 					Please wait while we connect you to our online support agent
 				</h2>
-				
-				<p style="text-align:center"><i class="fa fa-spinner fa-spin fa-3x"></i></p>
+
+				<div class="loadingImage"></div>
 			</div>
 		</div>
-		
-		
+
+
 		<div id="error-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
-			
+
 			<div data-role="content">
 				<h2>
 					There is a problem with the connection, please try again!
 				</h2>
 			</div>
 		</div>
-	
+
 		<div id="noService-page" data-role="page" data-theme="a">
 			<div data-role="header">
 				<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
 			</div>
-			
+
 			<div data-role="content">
 				<h2 id="noServiceMessage">
 				</h2>
 			</div>
-			
+
 			<div data-position="fixed" data-theme="d" data-role="footer">
 				<a id="buttonSendEmail" data-role="button" data-wrapperels="false" data-iconshadow="false" data-shadow="false" data-corners="false" class="five9-ivr-start-btn" href="#">Send an email</a>
 			</div>
-			
+
 		</div>
 
-		<div id="conversation-page" data-role="page" data-theme="a">
-			<table style="height: 100%; width: 100%; border: none; overflow: hidden">
-				<thead>
-					<tr>
-						<th style="width: 100%">
-							<div data-role="header">
-								<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
-								<a id="buttonTerminateChat" data-inline="true" class="ui-btn-right five9-ivr-right-btn" data-iconpos="right" data-icon="" href="#" data-role="button" role="button">Terminate</a>
+		<div id="conversation-page" data-role="page" data-theme="a" style="height: 100% !important;">
+			<div class="table">
+				<div class="row">
+					<div class="cell" style="height: 42px;">
+						<div data-role="header">
+							<p style="text-align: center;"><img src="images/logo.gif" style="height: 50px; margin: 5px;"/> </p>
+							<a id="buttonTerminateChat" data-inline="true" class="ui-btn-right five9-ivr-right-btn" data-iconpos="right" data-icon="" href="#" data-role="button" role="button">Terminate</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="cell chatContent">
+						<div class="messages" id="messages">
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="cell" style="height: 50px; ">
+						<div class="chatInputMessageContainer" style="">
+							<div style="height: 100%; float: right; margin-left: 6px;">
+								<a id="buttonSend" data-rel="Send" data-inline="true" class="five9-ivr-send-btn" data-iconpos="" data-icon="" href="#" data-role="button" role="button" style="outline: none; text-shadow: none; box-shadow: none;">Send</a>
 							</div>
-						</th>
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<td style="width: 100%">
-							<table style="width: 100%; border: none;">
-								<tr>
-									<td><textarea id="inputMessage" data-role="none" class="chatInputMessage" maxlength="2048" style="height: 100%; width: 100%"></textarea></td>
-									<td><a id="buttonSend" data-rel="Send" data-inline="true" class="five9-ivr-send-btn" data-iconpos="" data-icon="" href="#" data-role="button" role="button" style="height: 100%;">Send</a></td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</tfoot>
-				<tbody>
-					<tr>
-						<td style="width: 100%">
-							<div class="chatContent" style="height: 100%; width: 100%; overflow-y: auto">
-								<div class="messages" id="messages">
-								</div>
+
+							<div style="height: 50px; overflow: hidden; padding-right: 10px; padding-bottom: 4px;">
+								<div id="inputMessage" class="chatInputMessage" maxlength="2048" wrap="hard" contenteditable="true"></div>
+								<!-- textarea id="inputMessage" class="chatInputMessage" maxlength="2048" wrap="hard" style="height: 112px; margin: 0px 6px 0px 0px;"></textarea -->
 							</div>
-						</td>
-					</tr>
-				</tbody>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+
 	</body>
 </html>

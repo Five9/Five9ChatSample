@@ -4,6 +4,15 @@ function MessageSender() {
 	var MAX_NBTRIES = 10;
 	var nbrTries = 0;
 	
+    this.getAgentAvailable = function(tenantName) {
+    	Console.log("MessageSender - getAgentAvailable for " + tenantName);
+        
+        var lvPathname  = "/tenants/" + tenantName + "/agentsLoggedIn";
+        
+        gHTTPCommunication.GET(lvPathname, null, gSession.getAdminUrl());
+    };
+    
+    
     function getTenantId(tenantName) {
     	Console.log("MessageSender - getTenantId for " + tenantName);
         
@@ -13,8 +22,8 @@ function MessageSender() {
         
         gHTTPCommunication.GET(lvPathname, null, gSession.getAdminUrl());
     };
-    
-    
+
+
 	this.sendKeepAlive = function() {
 	    Console.log("MessageSender - sendKeepAlive");
 	    
